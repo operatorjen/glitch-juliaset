@@ -4,18 +4,18 @@ let o = {
   length : 500,
   width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 50,
+  maxIterate : 10,
   canvas : null
 }
 
 function point(pos, color) {
-  let c = 255 - Math.round((1 + Math.log(color) / Math.log(o.maxIterate)) * 255)
+  let c = 255 - Math.round((1 + Math.log(color) / Math.log(o.maxIterate)) * 35)
   c = c.toString(16)
 
   if (c.length === 1) {
     o.canvas.fillStyle = '#AADFA' + c
   } else {
-    o.canvas.fillStyle = '#EEFF' + c
+    o.canvas.fillStyle = '#' + c.split('').reverse().join('') + c
   }
 
   o.canvas.fillRect(pos[0], pos[1], 1, 1)
@@ -41,6 +41,8 @@ let z, x, y, i
 
 function init() {
   o.canvas = document.querySelector('canvas').getContext('2d')
+  o.canvas.imageSmoothingEnabled = true
+//  o.canvas.translate(0.5, 0.5)
 }
 
 function render() {
@@ -57,7 +59,7 @@ function render() {
       }
 
       if (i) {
-        point([x, y], i / o.maxIterate)
+        point([x, y], (i + Math.random()) / o.maxIterate)
       }
     }
   }
