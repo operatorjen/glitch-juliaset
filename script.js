@@ -1,15 +1,15 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 500,
-  width : 500,
+  length : 100,
+  width : 100,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 10,
+  maxIterate : 1,
   canvas : null
 }
 
 function point(pos, color) {
-  let c = 255 - Math.round((1 + Math.log(color) / Math.log(o.maxIterate)) * 35)
+  let c = 255 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 2) * 100)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -42,14 +42,14 @@ let z, x, y, i
 function init() {
   o.canvas = document.querySelector('canvas').getContext('2d')
   o.canvas.imageSmoothingEnabled = true
-//  o.canvas.translate(0.5, 0.5)
+  //o.canvas.translate(0.5, 0.5)
 }
 
 function render() {
   init()
   for (x = 0; x < o.width; x++) {
     for (y = 0; y < o.length; y++) {
-      i = 0
+      i = 1
       z = conversion(x, y, R)
       
       while (i < o.maxIterate && abs(z) < R) {
@@ -59,11 +59,11 @@ function render() {
       }
 
       if (i) {
-        point([x, y], (i + Math.random()) / o.maxIterate)
+        point([x, y], (i * Math.random() + Math.random() * 110) / o.maxIterate)
       }
     }
   }
-  //requestAnimationFrame(render) 
+  requestAnimationFrame(render) 
 }
 
 render()
