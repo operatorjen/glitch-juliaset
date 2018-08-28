@@ -4,12 +4,12 @@ let o = {
   length : 150,
   width : 300,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 10,
+  maxIterate : 139,
   canvas : null
 }
 
 function point(pos, color) {
-  let c = 215 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 8) * 100)
+  let c = 115 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 118) * 100)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -36,7 +36,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-const R = (1 + Math.sqrt(0.11 + 100 * abs(o.c))) / 5
+const R = (1 + Math.sqrt(10.01 + 100 * abs(o.c))) / 5
 let z, x, y, i
 
 function init() {
@@ -46,7 +46,6 @@ function init() {
 }
 
 function render() {
-  init()
   for (x = 0; x < o.width; x++) {
     for (y = 0; y < o.length; y++) {
       i = 0
@@ -67,4 +66,5 @@ function render() {
   requestAnimationFrame(render) 
 }
 
+init()
 render()
