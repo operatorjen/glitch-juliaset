@@ -1,28 +1,30 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 800,
-  width : 800,
+  length : 500,
+  width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 500,
+  maxIterate : 50,
   canvas : null
 }
 
 function point(pos, color) {
-  let c = 255 - Math.round((1 + Math.log(color) / Math.log(o.maxIterate)) * 255)
+  let c = 215 - Math.round((1 + Math.log(color) / Math.log(o.maxIterate)) * 215)
   c = c.toString(16)
 
-  if (c.length == 1) {
-    c = '5' + c
+  if (c.length === 1) {
+    o.canvas.fillStyle = '#00000' + c
+  } else {
+    o.canvas.fillStyle = '#FFFF' + c
   }
-  o.canvas.fillStyle = '#A190' + c
+
   o.canvas.fillRect(pos[0], pos[1], 1, 1)
 }
 
 function conversion(x, y, R) {
   const m = R / o.width
   const x1 = m * (2 * x - o.width)
-  const y2 = m * (o.width - 2 * y)
+  const y2 = m * (o.width - 1.9 * y)
   return [x1, y2]
 }
 
@@ -35,7 +37,7 @@ function abs(z) {
 }
 
 function init() {
-  const R = (1 + Math.sqrt(1 + 4 * abs(o.c))) / 2
+  const R = (1 + Math.sqrt(0.01 + .4 * abs(o.c))) / 1.2
   let z, x, y, i
 
   o.canvas = document.querySelector('canvas').getContext('2d')
