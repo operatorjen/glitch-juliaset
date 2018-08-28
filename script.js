@@ -9,13 +9,13 @@ let o = {
 }
 
 function point(pos, color) {
-  let c = 25 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 2) * 100)
+  let c = 215 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 8) * 100)
   c = c.toString(16)
 
   if (c.length === 1) {
     o.canvas.fillStyle = '#AADFA' + c
   } else {
-    o.canvas.fillStyle = '#' + c.split('').reverse().join('') + c
+    o.canvas.fillStyle = '#' + c.split('').reverse().join('') + c.split('').reverse().join('')
   }
 
   o.canvas.fillRect(pos[0], pos[1], 1, 1)
@@ -24,7 +24,7 @@ function point(pos, color) {
 function conversion(x, y, R) {
   const m = R / o.width
   const x1 = m * (2 * x - o.width)
-  const y2 = m * (o.width - 2.9 * y)
+  const y2 = m * (o.width - 3.9 * y)
   return [x1, y2]
 }
 
@@ -36,7 +36,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-const R = (1 + Math.sqrt(1 + 1.4 * abs(o.c))) / 2
+const R = (1 + Math.sqrt(0.11 + 100 * abs(o.c))) / 5
 let z, x, y, i
 
 function init() {
@@ -49,7 +49,7 @@ function render() {
   init()
   for (x = 0; x < o.width; x++) {
     for (y = 0; y < o.length; y++) {
-      i = 1
+      i = 0
       z = conversion(x, y, R)
       
       while (i < o.maxIterate && abs(z) < R) {
@@ -60,7 +60,7 @@ function render() {
 
       if (i) {
         point([x, y], 
-        (i + Math.random() * 4) / o.maxIterate)
+        (i + (Math.random() * 10) * Math.random() * 1) / o.maxIterate)
       }
     }
   }
