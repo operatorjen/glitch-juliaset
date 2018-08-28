@@ -36,7 +36,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-const R = (1 + Math.sqrt(1.01 + 10 * abs(o.c))) / 2
+const R = 2.0
 let z, x, y, i
 
 function init() {
@@ -55,10 +55,10 @@ function render() {
         z = f(z, o.c)
         if (abs(z) > R) break
         i++
-        if (o.maxIterate > 110) {
-          o.maxIterate = 6
+        if (o.maxIterate > 50) {
+          o.maxIterate = 2
         } else {
-          o.maxIterate += 0.001
+          o.maxIterate += 0.0000001
         }
       }
 
