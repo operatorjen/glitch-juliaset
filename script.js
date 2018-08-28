@@ -1,15 +1,15 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 100,
-  width : 100,
+  length : 150,
+  width : 300,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 1,
+  maxIterate : 10,
   canvas : null
 }
 
 function point(pos, color) {
-  let c = 255 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 2) * 100)
+  let c = 25 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 2) * 100)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -29,7 +29,7 @@ function conversion(x, y, R) {
 }
 
 function f(z, c) {
-  return [z[0] * z[0] - z[1] * z[1] + c[0], 2 * z[0] * z[1] + c[1]]
+  return [z[0] * z[0] - z[1] * z[1] + c[0], 1 * z[0] * z[1] + c[1]]
 }
 
 function abs(z) {
@@ -59,7 +59,8 @@ function render() {
       }
 
       if (i) {
-        point([x, y], (i * Math.random() + Math.random() * 110) / o.maxIterate)
+        point([x, y], 
+        (i + Math.random() * 4) / o.maxIterate)
       }
     }
   }
