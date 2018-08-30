@@ -3,10 +3,9 @@
 body {
   font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
   margin: 0;
-  background-color: #111;
+  background-color: #eee;
 }
 
 canvas {
-  width: 900px;
-  height: 506px;
+
 }

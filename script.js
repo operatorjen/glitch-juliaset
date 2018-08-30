@@ -1,10 +1,10 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 150,
-  width : 300,
+  length : window.innerHeight,
+  width : window.innerWidth,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 9,
+  maxIterate : 10,
   canvas : null
 }
 
@@ -23,8 +23,8 @@ function point(pos, color) {
 
 function conversion(x, y, R) {
   const m = R / o.width
-  const x1 = m * (2 * x - o.width)
-  const y2 = m * (o.width - 3.9 * y)
+  const x1 = m * (12 * x - o.width)
+  const y2 = m * (o.width - 12.9 * y)
   return [x1, y2]
 }
 
@@ -38,13 +38,16 @@ function abs(z) {
 
 const R = 2.0
 let z, x = 0, y = 0, i
-let currMax = 50
+let currMax = 100
 let iterate = 0.1
 let count = 0
 
 function init() {
   o.canvas = document.querySelector('canvas').getContext('2d')
   o.canvas.imageSmoothingEnabled = true
+  o.canvas.width = window.innerWidth
+  o.canvas.height = window.innerHeight
+
   //o.canvas.translate(0.5, 0.5)
 }
 
@@ -56,12 +59,12 @@ function render() {
   
   if (y > o.length) {
     y = 0
-    x++
+    x+= 2
   }
   
   i = 0
   z = conversion(x, y, R)
-  
+  //console.log(abs(z), R)
   while (i < o.maxIterate && abs(z) < R) {
     z = f(z, o.c)
     if (abs(z) > R) {
@@ -70,17 +73,16 @@ function render() {
     
     i++
     
-    if (o.maxIterate > currMax) {
-      o.maxIterate = 2
-    } else {
-      o.maxIterate += iterate * 10^i
-    }
+    o.maxIterate += 0.00001
   }
-
+  console.log(i)
   if (i) {
     point([x, y], 
     i / o.maxIterate)
   }
+  
+  x++
+  y+= 2
 
   requestAnimationFrame(render) 
 }
