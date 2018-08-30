@@ -4,7 +4,7 @@ let o = {
   length : 500,
   width : 900,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 10,
+  maxIterate : 500,
   canvas : null
 }
 
@@ -37,7 +37,7 @@ function abs(z) {
 }
 
 const R = 2.0
-let z, x = 0, y = 0, i
+let z, x = 0, y = 0, i = 0
 let currMax = 100
 let iterate = 0.1
 let count = 0
@@ -60,9 +60,9 @@ function render() {
   
   if (y > o.length) {
     y = 0
+    x++
   }
-  
-  i = 0
+
   z = conversion(x, y, R)
   //console.log(abs(z), R)
   while (i < o.maxIterate && abs(z) < R) {
@@ -72,10 +72,10 @@ function render() {
     }
     
     i++
-    
-    //o.maxIterate += 0.00001
+  
   }
- 
+  x++
+  console.log(x, y, i)
   if (i) {
     point([Math.random(), Math.random()], 
     i / o.maxIterate)
