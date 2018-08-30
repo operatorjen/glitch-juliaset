@@ -38,6 +38,9 @@ function abs(z) {
 
 const R = 2.0
 let z, x, y, i
+let currMax = 50
+let iterate = 0.1
+let reverse = false
 
 function init() {
   o.canvas = document.querySelector('canvas').getContext('2d')
@@ -47,6 +50,7 @@ function init() {
 
 function render() {
   for (x = 0; x < o.width; x++) {
+    reverse = false
     for (y = 0; y < o.length; y++) {
       i = 0
       z = conversion(x, y, R)
@@ -55,10 +59,12 @@ function render() {
         z = f(z, o.c)
         if (abs(z) > R) break
         i++
-        if (o.maxIterate > 50) {
+        if (o.maxIterate > currMax) {
           o.maxIterate = 2
+          reverse = true
         } else {
-          o.maxIterate += 0.0000001
+          o.maxIterate += iterate * 10^i
+    
         }
       }
 
