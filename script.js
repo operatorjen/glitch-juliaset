@@ -53,9 +53,13 @@ function init() {
 }
 
 function render() {
-  x = Math.random() * 1000
-  y = Math.random() * 1000
-
+  y += Math.random() * 10
+  
+  if (x > o.width) {
+    x += Math.random() * 10
+    y 
+  }
+    
   z = conversion(x, y, R)
   //console.log(abs(z), R)
   while (i < o.maxIterate && abs(z) < R) {
