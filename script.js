@@ -4,7 +4,7 @@ let o = {
   length : 150,
   width : 300,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 5,
+  maxIterate : 9,
   canvas : null
 }
 
@@ -37,10 +37,9 @@ function abs(z) {
 }
 
 const R = 2.0
-let z, x, y, i
-let currMax = 10
+let z, x = 0, y = 0, i
+let currMax = 50
 let iterate = 0.1
-let reverse = false
 let count = 0
 
 function init() {
@@ -50,39 +49,39 @@ function init() {
 }
 
 function render() {
-  let x = count
-  let y = [count, count + 1, count + 2]
-  console.log(x, y)
+  if (x > o.width) {
+    x = 0 
+    y++
+  }
+  
+  if (y > o.length) {
+    y = 0
+    x++
+  }
+  
   i = 0
   z = conversion(x, y, R)
-
+  
   while (i < o.maxIterate && abs(z) < R) {
     z = f(z, o.c)
-    if (abs(z) > R) break
+    if (abs(z) > R) {
+      break
+    }
+    
     i++
-
+    
     if (o.maxIterate > currMax) {
       o.maxIterate = 2
-      currMax -= iterate * 10^i
-      //iterate += iterate * 10^i
     } else {
-      o.maxIterate += iterate
-    }
-
-    if (currMax < 2) {
-      currMax = 10
+      o.maxIterate += iterate * 10^i
     }
   }
 
   if (i) {
-    point([x, y], i / o.maxIterate)
+    point([x, y], 
+    i / o.maxIterate)
   }
-  
-  count++
-  
-  if (count > o.width * o.length) {
-    count = 0 
-  }
+
   requestAnimationFrame(render) 
 }
 
