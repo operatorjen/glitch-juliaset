@@ -4,7 +4,7 @@ let o = {
   length : 150,
   width : 300,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 10,
+  maxIterate : 5,
   canvas : null
 }
 
@@ -38,9 +38,10 @@ function abs(z) {
 
 const R = 2.0
 let z, x, y, i
-let currMax = 50
+let currMax = 10
 let iterate = 0.1
 let reverse = false
+let count = 0
 
 function init() {
   o.canvas = document.querySelector('canvas').getContext('2d')
@@ -49,32 +50,38 @@ function init() {
 }
 
 function render() {
-  for (x = 0; x < o.width; x++) {
-    reverse = false
-    for (y = 0; y < o.length; y++) {
-      i = 0
-      z = conversion(x, y, R)
-      
-      while (i < o.maxIterate && abs(z) < R) {
-        z = f(z, o.c)
-        if (abs(z) > R) break
-        i++
-     
-        if (o.maxIterate > currMax) {
-          o.maxIterate = 2
-          reverse = true
-          //currMax += iterate * 10
-          //iterate += iterate * 10^i
-        } else {
-          o.maxIterate += iterate
-        }
-      }
-      console.log(o.maxIterate)
-      if (i) {
-        point([x, y], 
-        i / o.maxIterate)
-      }
+  let x = count
+  let y = [count, count + 1, count + 2]
+  console.log(x, y)
+  i = 0
+  z = conversion(x, y, R)
+
+  while (i < o.maxIterate && abs(z) < R) {
+    z = f(z, o.c)
+    if (abs(z) > R) break
+    i++
+
+    if (o.maxIterate > currMax) {
+      o.maxIterate = 2
+      currMax -= iterate * 10^i
+      //iterate += iterate * 10^i
+    } else {
+      o.maxIterate += iterate
     }
+
+    if (currMax < 2) {
+      currMax = 10
+    }
+  }
+
+  if (i) {
+    point([x, y], i / o.maxIterate)
+  }
+  
+  count++
+  
+  if (count > o.width * o.length) {
+    count = 0 
   }
   requestAnimationFrame(render) 
 }
