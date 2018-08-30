@@ -1,10 +1,10 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 800,
-  width : 800,
+  length : 500,
+  width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 500,
+  maxIterate : 50,
   canvas : null
 }
 
@@ -36,7 +36,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 1.5
+let R = 2.0
 let z, x = 0, y = 0, i
 let count = 0
 
@@ -44,8 +44,8 @@ function init() {
   o.canvas = document.querySelector('canvas')
   o.ctx = o.canvas.getContext('2d')
   o.ctx.imageSmoothingEnabled = true
-  o.canvas.width = 800
-  o.canvas.height = 800
+  o.canvas.width = 500
+  o.canvas.height = 500
 
   o.ctx.translate(0.5, 0.5)
 }
