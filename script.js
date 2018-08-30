@@ -1,8 +1,8 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 900,
-  width : 500,
+  length : 500,
+  width : 900,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 10,
   canvas : null
@@ -23,8 +23,8 @@ function point(pos, color) {
 
 function conversion(x, y, R) {
   const m = R / o.width
-  const x1 = m * (12 * x - o.width)
-  const y2 = m * (o.width - 12.9 * y)
+  const x1 = m * (2 * x - o.width)
+  const y2 = m * (o.width - 2.9 * y)
   return [x1, y2]
 }
 
@@ -54,7 +54,8 @@ function init() {
 
 function render() {
   if (x > o.width) {
-    x = 0 
+    x = 0
+    y++
   }
   
   if (y > o.length) {
@@ -74,15 +75,12 @@ function render() {
     
     //o.maxIterate += 0.00001
   }
-  console.log(i, abs(z) < R)
+ 
   if (i) {
-    point([x, y], 
+    point([Math.random(), Math.random()], 
     i / o.maxIterate)
   }
-  
-  x++
-  y+= 1
-  console.log(x, y)
+
   requestAnimationFrame(render) 
 }
 
