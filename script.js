@@ -4,7 +4,7 @@ let o = {
   length : 500,
   width : 900,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 500,
+  maxIterate : 50,
   canvas : null
 }
 
@@ -18,7 +18,7 @@ function point(pos, color) {
     o.ctx.fillStyle = '#' + c.split('').reverse().join('') + c
   }
 
-  o.ctx.fillRect(pos[0], pos[1] + 1, 2, 2)
+  o.ctx.fillRect(pos[0], pos[1] + 1, 12, 12)
 }
 
 function conversion(x, y, R) {
@@ -37,8 +37,7 @@ function abs(z) {
 }
 
 const R = 2.0
-let z, x = 0, y = 0, i = 0
-let currMax = 100
+let z, x = 1, y = 1, i = 1
 let iterate = 0.1
 let count = 0
 
@@ -52,33 +51,38 @@ function init() {
   //o.canvas.translate(0.5, 0.5)
 }
 
-function render() {
-  y += Math.random() * 10
+function render() {  
+  if (y > o.length) {
+    x ++ 
+    y = 1
+  }
   
   if (x > o.width) {
-    x += Math.random() * 10
-    y 
+    x = 1 
   }
     
   z = conversion(x, y, R)
   //console.log(abs(z), R)
-  while (i < o.maxIterate && abs(z) < R) {
+  while (i < o.maxIterate && abs(z) > R) {
     z = f(z, o.c)
     if (abs(z) > R) {
       break
     }
     
     i++
-  
   }
 
- // console.log(x, y, i)
+  console.log(x, y, i)
   if (i) {
     point([x, y], 
     i / o.maxIterate)
   }
+  
+  y++
 
-  requestAnimationFrame(render) 
+  setTimeout(() => {
+    requestAnimationFrame(render)
+  }, 0.05)
 }
 
 init()
