@@ -1,10 +1,10 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 500,
-  width : 900,
+  length : 900,
+  width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 50,
+  maxIterate : 10,
   canvas : null
 }
 
@@ -18,7 +18,7 @@ function point(pos, color) {
     o.ctx.fillStyle = '#' + c.split('').reverse().join('') + c
   }
 
-  o.ctx.fillRect(pos[0], pos[1] + 1, 12, 12)
+  o.ctx.fillRect(pos[0], pos[1] + 1, 2, 2)
 }
 
 function conversion(x, y, R) {
@@ -37,7 +37,8 @@ function abs(z) {
 }
 
 const R = 2.0
-let z, x = 1, y = 1, i = 1
+let z, x = 0, y = 0, i
+let currMax = 100
 let iterate = 0.1
 let count = 0
 
@@ -51,19 +52,25 @@ function init() {
   //o.canvas.translate(0.5, 0.5)
 }
 
-function render() {  
-  if (y > o.length) {
-    x ++ 
-    y = 1
+function render() {
+  /*
+  if (x > o.width) {
+    x = 0 
+    y++
   }
   
-  if (x > o.width) {
-    x = 1 
+  if (y > o.length) {
+    y = 0
   }
-    
+  */
+  
+  x = Math.random() * o.width
+  y = Math.random() * o.length
+  
+  i = 0
   z = conversion(x, y, R)
   //console.log(abs(z), R)
-  while (i < o.maxIterate && abs(z) > R) {
+  while (i < o.maxIterate && abs(z) < R) {
     z = f(z, o.c)
     if (abs(z) > R) {
       break
@@ -72,17 +79,11 @@ function render() {
     i++
   }
 
-  console.log(x, y, i)
   if (i) {
-    point([x, y], 
-    i / o.maxIterate)
+    point([x, y], i / o.maxIterate)
   }
-  
-  y++
 
-  setTimeout(() => {
-    requestAnimationFrame(render)
-  }, 0.05)
+  requestAnimationFrame(render) 
 }
 
 init()
