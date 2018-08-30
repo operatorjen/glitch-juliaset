@@ -2,9 +2,9 @@
 
 let o = {
   length : 800,
-  width : 1000,
+  width : 800,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 110,
+  maxIterate : 500,
   canvas : null
 }
 
@@ -15,16 +15,16 @@ function point(pos, color) {
   if (c.length === 1) {
     o.ctx.fillStyle = '#AADFA' + c
   } else {
-    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + c
+    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + c.split('').reverse().join('')
   }
 
-  o.ctx.fillRect(pos[0], pos[1] + 1, 1, 1)
+  o.ctx.fillRect(pos[0], pos[1], 1, 1)
 }
 
 function conversion(x, y, R) {
   const m = R / o.width
-  const x1 = m * (2 * x - o.width)
-  const y2 = m * (o.width - 2.7 * y)
+  const x1 = m * (1.8 * x - o.width)
+  const y2 = m * (o.width - 2.3 * y)
   return [x1, y2]
 }
 
@@ -36,7 +36,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-const R = 2.0
+let R = 30.0
 let z, x = 0, y = 0, i
 let currMax = 100
 let iterate = 0.1
@@ -46,16 +46,21 @@ function init() {
   o.canvas = document.querySelector('canvas')
   o.ctx = o.canvas.getContext('2d')
   o.ctx.imageSmoothingEnabled = true
-  o.canvas.width = 1000
+  o.canvas.width = 800
   o.canvas.height = 800
 
-  //o.canvas.translate(0.5, 0.5)
+  o.ctx.translate(0.5, 0.5)
 }
 
 function render() {
   for (let j = 0; j < 550; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
+    R--
+    
+    if (R < 1) {
+      R = 30  
+    }
 
     i = 0
     z = conversion(x, y, R)
@@ -66,12 +71,12 @@ function render() {
         break
       }
 
-      i++
+      i+=1.5
       
-      o.maxIterate += 0.0001
+      o.maxIterate -= 0.001
     }
     
-    o.maxIterate += 0.00001
+    o.maxIterate -= 0.0001
 
     if (i) {
       point([x, y], i / o.maxIterate)
