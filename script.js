@@ -36,10 +36,8 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 30.0
+let R = 1.5
 let z, x = 0, y = 0, i
-let currMax = 100
-let iterate = 0.1
 let count = 0
 
 function init() {
@@ -56,27 +54,24 @@ function render() {
   for (let j = 0; j < 550; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
-    R--
-    
-    if (R < 1) {
-      R = 30  
-    }
+    //R -= 0.0001
 
     i = 0
     z = conversion(x, y, R)
     //console.log(abs(z), R)
     while (i < o.maxIterate && abs(z) < R) {
       z = f(z, o.c)
+      
       if (abs(z) > R) {
         break
       }
 
-      i+=1.5
+      i++
       
-      o.maxIterate -= 0.001
+      o.maxIterate -= 1.00001
     }
     
-    o.maxIterate -= 0.0001
+    o.maxIterate += 1.000001
 
     if (i) {
       point([x, y], i / o.maxIterate)
