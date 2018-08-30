@@ -1,8 +1,8 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : window.innerHeight,
-  width : window.innerWidth,
+  length : 900,
+  width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 10,
   canvas : null
@@ -13,12 +13,12 @@ function point(pos, color) {
   c = c.toString(16)
 
   if (c.length === 1) {
-    o.canvas.fillStyle = '#AADFA' + c
+    o.ctx.fillStyle = '#AADFA' + c
   } else {
-    o.canvas.fillStyle = '#' + c.split('').reverse().join('') + c
+    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + c
   }
 
-  o.canvas.fillRect(pos[0], pos[1], 1, 1)
+  o.ctx.fillRect(pos[0], pos[1] + 1, 2, 2)
 }
 
 function conversion(x, y, R) {
@@ -43,10 +43,11 @@ let iterate = 0.1
 let count = 0
 
 function init() {
-  o.canvas = document.querySelector('canvas').getContext('2d')
-  o.canvas.imageSmoothingEnabled = true
-  o.canvas.width = window.innerWidth
-  o.canvas.height = window.innerHeight
+  o.canvas = document.querySelector('canvas')
+  o.ctx = o.canvas.getContext('2d')
+  o.ctx.imageSmoothingEnabled = true
+  o.canvas.width = 900
+  o.canvas.height = 500
 
   //o.canvas.translate(0.5, 0.5)
 }
@@ -54,12 +55,10 @@ function init() {
 function render() {
   if (x > o.width) {
     x = 0 
-    y++
   }
   
   if (y > o.length) {
     y = 0
-    x+= 2
   }
   
   i = 0
@@ -73,17 +72,17 @@ function render() {
     
     i++
     
-    o.maxIterate += 0.00001
+    //o.maxIterate += 0.00001
   }
-  console.log(i)
+  console.log(i, abs(z) < R)
   if (i) {
     point([x, y], 
     i / o.maxIterate)
   }
   
   x++
-  y+= 2
-
+  y+= 1
+  console.log(x, y)
   requestAnimationFrame(render) 
 }
 
