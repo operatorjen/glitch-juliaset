@@ -53,15 +53,8 @@ function init() {
 }
 
 function render() {
-  if (x > o.width) {
-    x = 0
-    y++
-  }
-  
-  if (y > o.length) {
-    y = 0
-    x++
-  }
+  x = Math.random() * 1000
+  y = Math.random() * 1000
 
   z = conversion(x, y, R)
   //console.log(abs(z), R)
@@ -74,10 +67,10 @@ function render() {
     i++
   
   }
-  x++
-  console.log(x, y, i)
+
+ // console.log(x, y, i)
   if (i) {
-    point([Math.random(), Math.random()], 
+    point([x, y], 
     i / o.maxIterate)
   }
 
