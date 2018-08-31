@@ -1,8 +1,8 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 800,
-  width : 800,
+  length : 600,
+  width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 50,
   canvas : null
@@ -18,13 +18,13 @@ function point(pos, color) {
     o.ctx.fillStyle = '#' + c.split('').reverse().join('') + c.split('').reverse().join('')
   }
 
-  o.ctx.fillRect(pos[0], pos[1], 1, 1)
+  o.ctx.fillRect(pos[0], pos[1], 2, 2)
 }
 
 function conversion(x, y, R) {
   const m = R / o.width
   const x1 = m * (1.8 * x - o.width)
-  const y2 = m * (o.width - 2.1 * y)
+  const y2 = m * (o.width - 1.5 * y)
   return [x1, y2]
 }
 
@@ -36,7 +36,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 2.0
+let R = 1.2
 let z, x = 0, y = 0, i
 let count = 0
 
@@ -51,7 +51,8 @@ function init() {
 }
 
 function render() {
-  for (let j = 0; j < 1550; j++) {
+  R += 0.001
+  for (let j = 0; j < 550; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
     //R -= 0.0001
@@ -67,7 +68,6 @@ function render() {
       }
 
       i++
-      
       //o.maxIterate -= 0.001
     }
     
