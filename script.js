@@ -2,17 +2,17 @@
 
 let o = {
   length : 600,
-  width : 500,
+  width : 600,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 550,
   canvas : null
 }
 
-let hex = 10
+let hex = 110
 let switched = false
 
 function point(pos, color) {
-  let c = 230 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 12) * 110)
+  let c = 110 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 10) * 210)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -31,16 +31,16 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + parseInt(hex, 16)
+    o.ctx.fillStyle = '#' + c + parseInt(hex, 16)
   }
 
-  o.ctx.fillRect(pos[0], pos[1], 2, 2)
+  o.ctx.fillRect(pos[0], pos[1], 1, 1)
 }
 
 function conversion(x, y, R) {
   const m = R / o.width
-  const x1 = m * (1.8 * x - o.width)
-  const y2 = m * (o.width - 1.5 * y)
+  const x1 = m * (4.2 * x - 2.1 * o.width)
+  const y2 = m * (o.width - 2.1 * y)
   return [x1, y2]
 }
 
@@ -67,7 +67,7 @@ function init() {
 }
 
 function render() {
-  R += 0.0005
+  R += 0.005
   for (let j = 0; j < 2050; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
@@ -87,7 +87,7 @@ function render() {
       //o.maxIterate -= 0.001
     }
     
-    o.maxIterate += 0.00000111111
+    //o.maxIterate += 0.0000111111
 
     if (i) {
       point([x, y], i / o.maxIterate)
