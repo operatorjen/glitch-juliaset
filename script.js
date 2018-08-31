@@ -31,7 +31,7 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    o.ctx.fillStyle = '#' + c + parseInt(hex, 16)
+    o.ctx.fillStyle = '#' + c + hex.toString(16)
   }
 
   o.ctx.fillRect(pos[0], pos[1], 1, 1)
@@ -39,7 +39,7 @@ function point(pos, color) {
 
 function conversion(x, y, R) {
   const m = R / o.width
-  const x1 = m * (4.2 * x - 2.1 * o.width)
+  const x1 = m * (4.2 * x - 1.6 * o.width)
   const y2 = m * (o.width - 2.1 * y)
   return [x1, y2]
 }
@@ -52,7 +52,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 1.2
+let R = 3.2
 let z, x = 0, y = 0, i
 let count = 0
 
@@ -67,8 +67,8 @@ function init() {
 }
 
 function render() {
-  R += 0.005
-  for (let j = 0; j < 2050; j++) {
+  R -= 0.005
+  for (let j = 0; j < 3000; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
     //R -= 0.0001
