@@ -4,7 +4,7 @@ let o = {
   length : 800,
   width : 800,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 550,
+  maxIterate : 50,
   canvas : null
 }
 
@@ -68,10 +68,10 @@ function render() {
 
       i++
       
-      o.maxIterate -= 0.0001
+      //o.maxIterate -= 0.001
     }
     
-    o.maxIterate += 0.000001
+    o.maxIterate += 0.00000111111
 
     if (i) {
       point([x, y], i / o.maxIterate)
