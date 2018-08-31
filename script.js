@@ -4,18 +4,34 @@ let o = {
   length : 600,
   width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 50,
+  maxIterate : 550,
   canvas : null
 }
 
+let hex = 10
+let switched = false
+
 function point(pos, color) {
-  let c = 200 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 12) * 110)
+  let c = 230 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 12) * 110)
   c = c.toString(16)
 
   if (c.length === 1) {
     o.ctx.fillStyle = '#AADFA' + c
   } else {
-    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + c.split('').reverse().join('')
+    if (switched) {
+      hex--
+    } else {
+      hex++
+    }
+    
+    if (hex > 255) {
+      switched = true
+    }
+          
+    if (hex < 10) {
+      switched = false      
+    }
+    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + parseInt(hex, 16)
   }
 
   o.ctx.fillRect(pos[0], pos[1], 2, 2)
@@ -51,8 +67,8 @@ function init() {
 }
 
 function render() {
-  R += 0.001
-  for (let j = 0; j < 550; j++) {
+  R += 0.0005
+  for (let j = 0; j < 2050; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
     //R -= 0.0001
