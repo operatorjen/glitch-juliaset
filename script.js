@@ -1,10 +1,10 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 500,
-  width : 500,
+  length : 800,
+  width : 800,
   c : [0, 1], // c = x + iy will be [x, y]
-  maxIterate : 50,
+  maxIterate : 550,
   canvas : null
 }
 
@@ -24,7 +24,7 @@ function point(pos, color) {
 function conversion(x, y, R) {
   const m = R / o.width
   const x1 = m * (1.8 * x - o.width)
-  const y2 = m * (o.width - 2.3 * y)
+  const y2 = m * (o.width - 2.1 * y)
   return [x1, y2]
 }
 
@@ -44,10 +44,10 @@ function init() {
   o.canvas = document.querySelector('canvas')
   o.ctx = o.canvas.getContext('2d')
   o.ctx.imageSmoothingEnabled = true
-  o.canvas.width = 500
-  o.canvas.height = 500
+  o.canvas.width = o.width
+  o.canvas.height = o.length
 
-  o.ctx.translate(0.5, 0.5)
+  //o.ctx.translate(0.5, 0.5)
 }
 
 function render() {
@@ -68,10 +68,10 @@ function render() {
 
       i++
       
-      o.maxIterate -= 1.00001
+      o.maxIterate -= 0.00001
     }
     
-    o.maxIterate += 1.000001
+    o.maxIterate += 0.0001
 
     if (i) {
       point([x, y], i / o.maxIterate)
