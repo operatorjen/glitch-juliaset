@@ -51,7 +51,7 @@ function init() {
 }
 
 function render() {
-  for (let j = 0; j < 550; j++) {
+  for (let j = 0; j < 1550; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
     //R -= 0.0001
@@ -68,10 +68,10 @@ function render() {
 
       i++
       
-      o.maxIterate -= 0.00001
+      o.maxIterate -= 0.0001
     }
     
-    o.maxIterate += 0.0001
+    o.maxIterate += 0.000001
 
     if (i) {
       point([x, y], i / o.maxIterate)
