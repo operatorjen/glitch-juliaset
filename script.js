@@ -38,9 +38,9 @@ function point(pos, color) {
 }
 
 function conversion(x, y, R, mult) {
-  const m = R / o.width / mult
-  const x1 = m * (Math.sin(mult) * x - o.width)
-  const y2 = m * (1.5 * o.width - y)
+  const m = (R / mult)  / o.width / (mult + (mult * 2))
+  const x1 = m * (Math.sin(mult) / x - o.width)
+  const y2 = m * (mult * o.width - y)
   return [x1, y2]
 }
 
@@ -52,7 +52,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 4.2
+let R = 11.2
 let z, x = 0, y = 0, i
 let count = 0
 
@@ -89,7 +89,7 @@ function render() {
     
     count++
     
-    if (count % 2000 === 0) {
+    if (count % 3000 === 0) {
       if (flip) {
         //mult -= 0.005
       } else {
