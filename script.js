@@ -2,7 +2,7 @@
 
 let o = {
   length : 600,
-  width : 600,
+  width : 700,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 550,
   canvas : null
@@ -12,7 +12,7 @@ let hex = 110
 let switched = false
 
 function point(pos, color) {
-  let c = 110 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 10) * 210)
+  let c = 105 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 10) * 20)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -39,7 +39,7 @@ function point(pos, color) {
 
 function conversion(x, y, R) {
   const m = R / o.width
-  const x1 = m * (4.2 * x - 1.6 * o.width)
+  const x1 = m * (7.2 * x + 10.6 * o.width)
   const y2 = m * (o.width - 2.1 * y)
   return [x1, y2]
 }
@@ -62,16 +62,13 @@ function init() {
   o.ctx.imageSmoothingEnabled = true
   o.canvas.width = o.width
   o.canvas.height = o.length
-
-  //o.ctx.translate(0.5, 0.5)
 }
 
 function render() {
-  R -= 0.005
+  //R -= 0.00005
   for (let j = 0; j < 3000; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
-    //R -= 0.0001
 
     i = 0
     z = conversion(x, y, R)
@@ -87,7 +84,7 @@ function render() {
       //o.maxIterate -= 0.001
     }
     
-    //o.maxIterate += 0.0000111111
+    o.maxIterate += 0.0000011111
 
     if (i) {
       point([x, y], i / o.maxIterate)
