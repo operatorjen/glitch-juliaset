@@ -12,7 +12,7 @@ let hex = 210
 let switched = false
 
 function point(pos, color) {
-  let c = 125 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 12) * 4)
+  let c = 125 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 12) * 4)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -64,7 +64,7 @@ function init() {
   o.canvas.height = o.length
 }
 
-let mult = 2
+let mult = 1
 let flip = false
 
 function render() {
@@ -89,15 +89,15 @@ function render() {
     
     count++
     
-    if (count % 15000 === 0) {
+    if (count % 2000 === 0) {
       if (flip) {
         //mult -= 0.005
       } else {
-        mult += 0.005 
+        mult += 0.0005 
       }
     }
     
-    if (count >= 100000) {
+    if (count >= 650000) {
       flip = !flip
       count = 0
     }
