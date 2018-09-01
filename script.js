@@ -1,14 +1,14 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 600,
-  width : 700,
+  length : 500,
+  width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 550,
   canvas : null
 }
 
-let hex = 110
+let hex = 210
 let switched = false
 
 function point(pos, color) {
@@ -34,13 +34,13 @@ function point(pos, color) {
     o.ctx.fillStyle = '#' + c + hex.toString(16)
   }
 
-  o.ctx.fillRect(pos[0], pos[1], 1, 1)
+  o.ctx.fillRect(pos[0], pos[1], 2, 2)
 }
 
 function conversion(x, y, R, mult) {
-  const m = R / o.width / mult / mult
-  const x1 = m * (5.2 * x - o.width)
-  const y2 = m * (o.width - 7.1 * y)
+  const m = R / o.width / mult
+  const x1 = m * (mult * x - o.width)
+  const y2 = m * (1.5 * o.width - y)
   return [x1, y2]
 }
 
@@ -52,7 +52,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 3.2
+let R = 4.2
 let z, x = 0, y = 0, i
 let count = 0
 
@@ -68,9 +68,9 @@ let mult = 2
 
 function render() {
   //R -= 0.00005
-  for (let j = 0; j < 15000; j++) {
+  for (let j = 0; j < 45000; j++) {
     x = Math.random() * o.width
-    y = Math.random() * o.length
+    y = Math.random() * o.length + 50
 
     i = 0
     z = conversion(x, y, R, mult)
@@ -88,11 +88,11 @@ function render() {
     
     count++
     
-    if (count % 2000000 === 0) {
-      mult += 1  
+    if (count % 100000 === 0) {
+      mult += 0.005  
     }
     
-    o.maxIterate += 0.0000011111
+    //o.maxIterate += 0.0000011111
 
     if (i) {
       point([x, y], i / o.maxIterate)
