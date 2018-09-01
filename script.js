@@ -1,8 +1,8 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 500,
-  width : 500,
+  length : 600,
+  width : 600,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 550,
   canvas : null
@@ -12,7 +12,7 @@ let hex = 210
 let switched = false
 
 function point(pos, color) {
-  let c = 105 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 10) * 20)
+  let c = 125 - Math.floor((1 + Math.log(color) / Math.log(o.maxIterate) * 10) * 2)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -31,15 +31,15 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    o.ctx.fillStyle = '#' + c + hex.toString(16)
+    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
   }
 
-  o.ctx.fillRect(pos[0], pos[1], 2, 2)
+  o.ctx.fillRect(pos[0], pos[1], 1, 1)
 }
 
 function conversion(x, y, R, mult) {
   const m = R / o.width / mult
-  const x1 = m * (mult * x - o.width)
+  const x1 = m * (Math.sin(mult) * x - o.width)
   const y2 = m * (1.5 * o.width - y)
   return [x1, y2]
 }
@@ -65,6 +65,7 @@ function init() {
 }
 
 let mult = 2
+let flip = false
 
 function render() {
   //R -= 0.00005
@@ -88,8 +89,19 @@ function render() {
     
     count++
     
-    if (count % 100000 === 0) {
-      mult += 0.005  
+    if (count % 30000 === 0) {
+      if (flip) {
+        //mult -= 0.005
+      } else {
+        mult += 0.005 
+      }
+    }
+    
+    if (count >= 100000) {
+      flip = !flip
+      setTimeout(() => {
+        count = 0
+      }, 5000)
     }
     
     //o.maxIterate += 0.0000011111
