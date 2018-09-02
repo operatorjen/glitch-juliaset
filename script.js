@@ -12,7 +12,7 @@ let hex = 210
 let switched = false
 
 function point(pos, color) {
-  let c = 115 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 12) * 4)
+  let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -45,7 +45,7 @@ function conversion(x, y, R, mult) {
 }
 
 function f(z, c) {
-  return [z[0] / z[0] * mult - z[1] * z[1] + c[0], z[0] * z[1] + c[1]]
+  return [z[0] * z[0] - z[1] * z[1] - c[0] / mult, z[0] * z[1] + c[1] * mult]
 }
 
 function abs(z) {
