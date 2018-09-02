@@ -34,17 +34,20 @@ function point(pos, color) {
       switched = false      
     }
  
+    o.ctx.beginPath()
     o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16) + c
     o.ctx.lineWidth = 1
-   // o.ctx.arc(1, 1, 10, 20, Math.PI * 2)
+    //o.ctx.arc(pos[0], pos[1], size, 0, Math.PI * 2)
+    o.ctx.fillRect(pos[0], pos[1], 1, 1)
+    o.ctx.stroke()
     o.ctx.fill()
   }
 }
 
 function conversion(x, y, R, mult) {
   const m = R / o.x / mult
-  const x1 = m * (2 * x - o.x)
-  const y2 = m * (o.x - 2 * y)
+  const x1 = m * (12 * x - o.x)
+  const y2 = m * (o.x / mult - 2 * y)
   return [x1, y2]
 }
 
