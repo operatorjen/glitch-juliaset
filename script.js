@@ -66,20 +66,19 @@ function point(pos, color) {
 }
 
 function conversion(x, y, R, mult) {
-  const m = R / o.width / mult
-  const x1 = m * (2 * x - o.width)
-  const y2 = m * (o.width - 2 * y)
-  const z3 = m * (2 * x * y - o.width)
+  const m = R / o.x / mult
+  const x1 = m * (2 * x - o.x)
+  const y2 = m * (o.x - 2 * y)
+  const z3 = m * (2 * x * y - o.x)
   return [x1, y2, z3]
 }
 
 function f(z, c) {
-  //return [z[0] * z[0] + z[1] * z[1] + c[0] - z[1], z[0] * z[1] - c[1]]
-  return [(z[0] * z[0] - z[1] * z[1] - z[2] * z[2] + c[0] / mult) * mult, (2 * z[0] * z[1] * z[2] + c[1] / mult) * Math.cos(-mult / 10)]
+  return [z[0] * z[0] + z[1] * z[1] + c[0] - z[1], z[0] * z[1] - c[1]]
 }
 
 function abs(z) {
-  return Math.sqrt(z[0] * z[0] + z[1] * z[1] + z[2] * z[2])
+  return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
 let R = 2.2
@@ -114,7 +113,8 @@ function render() {
 
     i = 0
     z = conversion(x, y, R, mult)
-    //console.log(abs(z), R)
+    
+    console.log(abs(z), R)
     while (i < o.maxIterate && abs(z) < R) {
       z = f(z, o.c)
       
@@ -124,6 +124,7 @@ function render() {
 
       i++
       //o.maxIterate -= 0.001
+      console.log(i)
     }
     
     count++
@@ -141,7 +142,7 @@ function render() {
       flip = !flip
       count = 0
     }
-
+    
     if (i) {
       point([x, y, z], i / o.maxIterate)
     }
