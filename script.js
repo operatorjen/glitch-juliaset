@@ -2,7 +2,7 @@
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  preserveDrawingBuffer: false,
+  preserveDrawingBuffer: true,
   alpha: false
 })
 
@@ -10,9 +10,9 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
-
+camera.position.z = -10
 const orbit = new THREE.OrbitControls(camera, renderer.domElement)
-orbit.autoRotate = true
+orbit.autoRotate = false
 //orbit.rotateSpeed = 30
 orbit.enableZoom = true
 
@@ -30,9 +30,9 @@ let o = {
 
 let hex = 110
 let switched = false
-let geometry, material, mesh
+let geometry, material, cube
 
-function point(pos, color, mult) {
+function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
   let c = 215 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
@@ -53,33 +53,30 @@ function point(pos, color, mult) {
     if (hex < 10) {
       switched = false      
     }
-    
-    geometry = new THREE.PlaneGeometry(10, 10, 10) 
+
+    geometry = new THREE.PlaneGeometry(10, 10, 10)
+  //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
       color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
       side: THREE.DoubleSide
     })
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.x = pos[0]
-    mesh.position.y = pos[1]
-    mesh.position.z = pos[2
-                        
-    scene.add(new THREE.Mesh(geometry, material))
-/*
+    cube = new THREE.Mesh(geometry, material)
+    cube.position.x = pos[0]
+    cube.position.y = pos[1]
+    cube.position.z = pos[2][0]
+    scene.add(cube)
+
     geometry = new THREE.PlaneGeometry(10, 10, 10)
   //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
       color: '#fd' + c.split('').reverse().join('') + hex.toString(16),
       side: THREE.DoubleSide
     })
-    mesh = new THREE.Mesh(geometry, material)
-    mesh.position.x = pos[0]
-    mesh.position.y = pos[1]
-    mesh.position.z = pos[2][1]
-    
-    geometry.merge(mesh.geometry, mesh.matrix)
-    scene.add(mesh)
-    */
+    cube = new THREE.Mesh(geometry, material)
+    cube.position.x = pos[0]
+    cube.position.y = pos[1]
+    cube.position.z = pos[2][1]
+    scene.add(cube)
    // o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
   }
   //pos[0], pos[1], pos[2])
@@ -93,18 +90,16 @@ function conversion(x, y, z, R, mult) {
   return [x1, y2, z3]
 }
 
-function f(z, c) {
-  return [z[0] * z[0] + z[1] * z[1] + c[0] - z[1], 
-          z[0] * z[1] - c[1],
-          z[0] * z[2] - c[2]]
+function f(z, c, mult) {
+  return [(z[0] * z[0] + z[1] * z[1] + c[0] - z[1]) / , (z[0] * z[1] - c[1]) / mult]
 }
 
 function abs(z) {
-  return Math.sqrt(z[0] * z[0] + z[1] * z[1] + z[2] * z[2])
+  return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 11.2
-let z, w, x = 0, y = 0, i
+let R = 22.2
+let z, x = 0, y = 0, i
 let count = 0
 
 function init() {
@@ -129,19 +124,18 @@ let flip = false
 function render() {
   R -= 0.00005
   orbit.update()
-  for (let j = 0; j < 510; j++) {
+  for (let j = 0; j < 4510; j++) {
   
     x = Math.random() * o.x
     y = Math.random() * o.y
-    z = Math.random() * o.z
 
     i = 0
-    w = conversion(x, y, z, R, mult)
+    z = conversion(x, y, z, R, mult)
     
-    while (i < o.maxIterate && abs(w) < (R * 1000)) {
-      w = f(w, o.c)
+    while (i < o.maxIterate && abs(z) < R) {
+      z = f(z, o.c)
       
-      if (abs(w) > R) {
+      if (abs(z) > R) {
         break
       }
 
@@ -149,14 +143,13 @@ function render() {
     }
 
     if (i) {
-      point([x, y, z, w], i / o.maxIterate, mult)
+      point([x, y, z], i / o.maxIterate)
     }
   
   }
   
  // point([10, 10, [10, 0]], 0.00410)
-  orbit.target.set(camera.position.x + 5, y, 1, w)
-  scene.position.z++
+  orbit.target.set(x, y, z[0])
   renderer.render(scene, camera)
   window.requestAnimationFrame(render)
 }
