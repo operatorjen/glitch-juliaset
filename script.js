@@ -12,7 +12,8 @@ let hex = 210
 let switched = false
 
 function point(pos, color) {
-  let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
+  // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
+  let c = 105 - Math.floor((10 + Math.tan(color*200) / Math.log(o.maxIterate) * 31) * 4)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -45,7 +46,7 @@ function conversion(x, y, R, mult) {
 }
 
 function f(z, c) {
-  return [z[0] * z[0] - z[1] * z[1] - c[0] / mult, z[0] * z[1] + c[1] * mult]
+  return [z[0] * z[0] - z[1] * z[1] - c[0], z[0] * z[1] + c[1]]
 }
 
 function abs(z) {
@@ -71,7 +72,7 @@ function render() {
   //R -= 0.00005
   for (let j = 0; j < 45000; j++) {
     x = Math.random() * o.width
-    y = Math.random() * o.length + 50
+    y = Math.random() * o.length
 
     i = 0
     z = conversion(x, y, R, mult)
