@@ -10,6 +10,7 @@ let o = {
 
 let hex = 110
 let switched = false
+let size = 20
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
@@ -35,7 +36,7 @@ function point(pos, color) {
  
     o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16) + c
 
-    o.ctx.fillRect(pos[0], pos[1], 0.5, 0.5)
+    o.ctx.fillRect(pos[0], pos[1], size, size)
   }
 }
 
@@ -70,7 +71,7 @@ let mult = 4.8
 let flip = false
 
 function render() {
-  R -= 0.005
+  R += 0.005
   for (let j = 0; j < 50000; j++) {
     x = Math.random() * o.x
     y = Math.random() * o.y
@@ -103,6 +104,11 @@ function render() {
     if (count >= 2000000) {
       flip = !flip
       count = 0
+      size -= 3
+      
+      if (size < 1) {
+       size = 1 
+      }
     }
     
     if (i) {
