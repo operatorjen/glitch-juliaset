@@ -12,7 +12,7 @@ const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
 camera.position.z = -10
 const orbit = new THREE.OrbitControls(camera, renderer.domElement)
-orbit.autoRotate = false
+orbit.autoRotate = true
 //orbit.rotateSpeed = 30
 orbit.enableZoom = true
 
@@ -36,7 +36,7 @@ function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
   let c = 215 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
-
+ // console.log(c)
   if (c.x === 1) {
  //   o.ctx.fillStyle = '#1111' + c
   } else {
@@ -53,8 +53,8 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    
-    geometry = new THREE.PlaneGeometry(1, 1, 1)
+
+    geometry = new THREE.PlaneGeometry(10, 10, 10)
   //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
       color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
@@ -66,10 +66,10 @@ function point(pos, color) {
     cube.position.z = pos[2][0]
     scene.add(cube)
 
-    geometry = new THREE.PlaneGeometry(1, 1, 1)
+    geometry = new THREE.PlaneGeometry(10, 10, 10)
   //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
-      color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
+      color: '#fd' + c.split('').reverse().join('') + hex.toString(16),
       side: THREE.DoubleSide
     })
     cube = new THREE.Mesh(geometry, material)
@@ -86,7 +86,7 @@ function conversion(x, y, z, R, mult) {
   const m = R / o.x / mult
   const x1 = m * (2 * x - o.x)
   const y2 = m * (o.x - 2 * y)
-  const z3 = m * (2 * y - o.z)
+  const z3 = m * (2 * y - z)
   return [x1, y2, z3]
 }
 
@@ -98,7 +98,7 @@ function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 2.2
+let R = 11.2
 let z, x = 0, y = 0, i
 let count = 0
 
@@ -122,9 +122,9 @@ let mult = 1
 let flip = false
 
 function render() {
-  //R -= 0.00005
+  R -= 0.00005
   orbit.update()
- // for (let j = 0; j < 10; j++) {
+  for (let j = 0; j < 1510; j++) {
   
     x = Math.random() * o.x
     y = Math.random() * o.y
@@ -140,33 +140,16 @@ function render() {
       }
 
       i++
-      //o.maxIterate -= 0.001
-      //console.log(i)
     }
-    
-    count++
-    
-    if (count % 4000 === 0) {
-      if (flip) {
-        //mult -= 0.005
-        //R = 15
-      } else {
-        mult += 0.0005 
-      }
-    }
-    
-    if (count >= 1700000) {
-      flip = !flip
-      count = 0
-    }
-    
+
     if (i) {
       point([x, y, z], i / o.maxIterate)
     }
   
- // }
+  }
   
  // point([10, 10, [10, 0]], 0.00410)
+  orbit.target.set(camera.position.x, y, camera.position.z)
   renderer.render(scene, camera)
   window.requestAnimationFrame(render)
 }
