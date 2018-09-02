@@ -8,12 +8,12 @@ let o = {
   canvas : null
 }
 
-let hex = 210
+let hex = 110
 let switched = false
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
-  let c = 245 - Math.floor((3 + Math.sin(color * 240) / Math.log(o.maxIterate) * 2) * 30)
+  let c = 115 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -32,28 +32,29 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    o.ctx.fillStyle = '#' + c + hex.toString(16)
+    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
   }
 
   o.ctx.fillRect(pos[0], pos[1], 1, 1)
 }
 
 function conversion(x, y, R, mult) {
-  const m = (R / mult)  / o.width / (mult + (mult / 0.2))
+  const m = R / o.width / mult
   const x1 = m * (2 * x - o.width)
-  const y2 = m * (o.width - y)
+  const y2 = m * (o.width - 2 * y)
   return [x1, y2]
 }
 
 function f(z, c) {
-  return [(z[0] * z[0] + z[1] * z[1] + c[0]) - z[1], (z[0] * z[1] - c[1]) / mult]
+  //return [z[0] * z[0] + z[1] * z[1] + c[0] - z[1], z[0] * z[1] - c[1]]
+  return [(z[0] * z[0] - z[1] * z[1] + c[0] / mult) * mult, (2 * z[0] * z[1] + c[1] / mult) * Math.cos(-mult / 10)]
 }
 
 function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 5.2
+let R = 2.2
 let z, x = 0, y = 0, i
 let count = 0
 
