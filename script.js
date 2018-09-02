@@ -1,8 +1,8 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 600,
-  width : 600,
+  length : 100,
+  width : 100,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 550,
   canvas : null
@@ -13,7 +13,7 @@ let switched = false
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
-  let c = 125 - Math.floor((10 + Math.tan(color*200) / Math.log(o.maxIterate) * 81) * 4)
+  let c = 125 - Math.floor((10 + Math.tan(color * 230) / Math.log(o.maxIterate) * 81) * 4)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -46,7 +46,7 @@ function conversion(x, y, R, mult) {
 }
 
 function f(z, c) {
-  return [(z[0] * z[0] - z[1] * z[1] - c[0]) + 100, z[0] * z[1] + c[1] * Math.sin(mult)]
+  return [(z[0] * z[0] - z[1] * z[1] - c[0]) - z[1], (z[0] * z[1] + c[1]) / Math.sin(mult * 10)]
 }
 
 function abs(z) {
@@ -90,15 +90,15 @@ function render() {
     
     count++
     
-    if (count % 4000 === 0) {
+    if (count % 5000 === 0) {
       if (flip) {
         //mult -= 0.005
       } else {
-        mult += 0.00005 
+        mult += 0.0005 
       }
     }
     
-    if (count >= 1500000) {
+    if (count >= 1700000) {
       flip = !flip
       count = 0
     }
