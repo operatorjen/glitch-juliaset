@@ -2,7 +2,7 @@
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  preserveDrawingBuffer: true,
+  preserveDrawingBuffer: false,
   alpha: false
 })
 
@@ -30,7 +30,7 @@ let o = {
 
 let hex = 110
 let switched = false
-let geometry, material, cube
+let geometry, material, mesh
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
@@ -60,11 +60,11 @@ function point(pos, color) {
       color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
       side: THREE.DoubleSide
     })
-    cube = new THREE.Mesh(geometry, material)
-    cube.position.x = pos[0]
-    cube.position.y = pos[1]
-    cube.position.z = pos[2][0]
-    scene.add(cube)
+    mesh = new THREE.Mesh(geometry, material)
+    mesh.position.x = pos[0]
+    mesh.position.y = pos[1]
+    mesh.position.z = pos[2][0]
+    scene.add(mesh)
 
     geometry = new THREE.PlaneGeometry(10, 10, 10)
   //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
@@ -72,11 +72,13 @@ function point(pos, color) {
       color: '#fd' + c.split('').reverse().join('') + hex.toString(16),
       side: THREE.DoubleSide
     })
-    cube = new THREE.Mesh(geometry, material)
-    cube.position.x = pos[0]
-    cube.position.y = pos[1]
-    cube.position.z = pos[2][1]
-    scene.add(cube)
+    mesh = new THREE.Mesh(geometry, material)
+    mesh.position.x = pos[0]
+    mesh.position.y = pos[1]
+    mesh.position.z = pos[2][1]
+    
+    geometry.merge(mesh.geometry, mesh.matrix)
+    scene.add(mesh)
    // o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
   }
   //pos[0], pos[1], pos[2])
@@ -91,15 +93,17 @@ function conversion(x, y, z, R, mult) {
 }
 
 function f(z, c) {
-  return [z[0] * z[0] + z[1] * z[1] + c[0] - z[1], z[0] * z[1] - c[1]]
+  return [z[0] * z[0] + z[1] * z[1] + c[0] - z[1], 
+          z[0] * z[1] - c[1],
+          z[0] * z[2] - c[2]]
 }
 
 function abs(z) {
-  return Math.sqrt(z[0] * z[0] + z[1] * z[1])
+  return Math.sqrt(z[0] * z[0] + z[1] * z[1] + z[2] * z[2])
 }
 
 let R = 11.2
-let z, x = 0, y = 0, i
+let z, w, x = 0, y = 0, i
 let count = 0
 
 function init() {
@@ -124,18 +128,19 @@ let flip = false
 function render() {
   R -= 0.00005
   orbit.update()
-  for (let j = 0; j < 1510; j++) {
+  for (let j = 0; j < 510; j++) {
   
     x = Math.random() * o.x
     y = Math.random() * o.y
+    z = Math.random() * o.z
 
     i = 0
-    z = conversion(x, y, z, R, mult)
+    w = conversion(x, y, z, R, mult)
     
-    while (i < o.maxIterate && abs(z) < R) {
-      z = f(z, o.c)
+    while (i < o.maxIterate && abs(w) < (R * 1000)) {
+      w = f(w, o.c)
       
-      if (abs(z) > R) {
+      if (abs(w) > R) {
         break
       }
 
@@ -143,13 +148,14 @@ function render() {
     }
 
     if (i) {
-      point([x, y, z], i / o.maxIterate)
+      point([x, y, z, w], i / o.maxIterate)
     }
   
   }
   
  // point([10, 10, [10, 0]], 0.00410)
-  orbit.target.set(camera.position.x, y, camera.position.z)
+  orbit.target.set(camera.position.x + 5, y, 1, w)
+  scene.position.z++
   renderer.render(scene, camera)
   window.requestAnimationFrame(render)
 }
