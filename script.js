@@ -18,7 +18,7 @@ function point(pos, color) {
   c = c.toString(16)
 
   if (c.x === 1) {
-    o.ctx.fillStyle = '#1' + c
+    o.ctx.strokeStyle = '#1' + c
   } else {
     if (switched) {
       hex--
@@ -34,9 +34,10 @@ function point(pos, color) {
       switched = false      
     }
  
-    o.ctx.strokeStyle = '#' + c.split('').reverse().join('') + hex.toString(16) + c
-   // o.ctx.arc(pos[0], pos[1], size, 0, Math.PI * size / 2)
-    o.ctx.stroke()
+    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16) + c
+    o.ctx.lineWidth = 1
+   // o.ctx.arc(1, 1, 10, 20, Math.PI * 2)
+    o.ctx.fill()
   }
 }
 
