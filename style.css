@@ -6,8 +6,3 @@ body {
   background-color: #111;
 }
 
-canvas {
-  width: 100vw;
-  height: 100vh;
-  background-color: #f00;
-}

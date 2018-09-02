@@ -14,7 +14,10 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const orbit = new THREE.OrbitControls(camera, renderer.domElement)
 orbit.autoRotate = true
 //orbit.rotateSpeed = 30
-orbit.enableZoom = false
+orbit.enableZoom = true
+
+const light = new THREE.AmbientLight(0x404040)
+scene.add(light)
 
 let o = {
   x: 500,
@@ -34,10 +37,10 @@ function point(pos, color) {
   let c = 115 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
 
-  if (c.length === 1) {
+  if (c.x === 1) {
  //   o.ctx.fillStyle = '#1111' + c
   } else {
-    if (switched) {
+  /*  if (switched) {
       hex--
     } else {
       hex++
@@ -50,15 +53,27 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    
-    geometry = new THREE.BoxGeometry(1, 1, 1)
+    */
+    geometry = new THREE.BoxGeometry(10, 10, 10)
+  //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
-      color: '#' + c.split('').reverse().join('') + hex.toString(16)
+      color: '#2d' + c.split('').reverse().join('') + hex.toString(16)
     })
     let cube = new THREE.Mesh(geometry, material)
     cube.position.x = pos[0]
     cube.position.y = pos[1]
-    cube.position.z = pos[2]
+    cube.position.z = pos[2][0]
+    scene.add(cube)
+
+    geometry = new THREE.BoxGeometry(1, 1, 1)
+  //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
+    material = new THREE.MeshBasicMaterial({
+      color: '#2d' + c.split('').reverse().join('') + hex.toString(16)
+    })
+    cube = new THREE.Mesh(geometry, material)
+    cube.position.x = pos[0]
+    cube.position.y = pos[1]
+    cube.position.z = pos[2][1]
     scene.add(cube)
    // o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
   }
@@ -69,8 +84,7 @@ function conversion(x, y, R, mult) {
   const m = R / o.x / mult
   const x1 = m * (2 * x - o.x)
   const y2 = m * (o.x - 2 * y)
-  const z3 = m * (2 * x * y - o.x)
-  return [x1, y2, z3]
+  return [x1, y2]
 }
 
 function f(z, c) {
@@ -107,14 +121,13 @@ let flip = false
 function render() {
   //R -= 0.00005
   orbit.update()
-  for (let j = 0; j < 50; j++) {
+ // for (let j = 0; j < 10; j++) {
     x = Math.random() * o.x
     y = Math.random() * o.y
 
     i = 0
     z = conversion(x, y, R, mult)
     
-    console.log(abs(z), R)
     while (i < o.maxIterate && abs(z) < R) {
       z = f(z, o.c)
       
@@ -146,7 +159,7 @@ function render() {
     if (i) {
       point([x, y, z], i / o.maxIterate)
     }
-  }
+ // }
 
   requestAnimationFrame(render) 
 }
