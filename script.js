@@ -34,8 +34,9 @@ function point(pos, color) {
       switched = false      
     }
  
-    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16) + c
-    o.ctx.arc(pos[0], pos[1], size, 0, 10)
+    o.ctx.strokeStyle = '#' + c.split('').reverse().join('') + hex.toString(16) + c
+   // o.ctx.arc(pos[0], pos[1], size, 0, Math.PI * size / 2)
+    o.ctx.stroke()
   }
 }
 
