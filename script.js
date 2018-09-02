@@ -1,24 +1,5 @@
 // from http://jsfiddle.net/3fnB6/29/
 
-const renderer = new THREE.WebGLRenderer({
-  antialias: true,
-  preserveDrawingBuffer: true,
-  alpha: false
-})
-
-renderer.setSize(window.innerWidth, window.innerHeight)
-
-const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
-camera.position.z = -10
-const orbit = new THREE.OrbitControls(camera, renderer.domElement)
-orbit.autoRotate = false
-//orbit.rotateSpeed = 30
-orbit.enableZoom = true
-
-const light = new THREE.AmbientLight(0x404040)
-scene.add(light)
-
 let o = {
   x: 500,
   y: 500,
@@ -30,13 +11,13 @@ let o = {
 
 let hex = 110
 let switched = false
-let geometry, material, cube
+let geometry, material
 
 function point(pos, color) {
-  // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
-  let c = 215 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
+  let c = 115 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
+  //let c = 115 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
- // console.log(c)
+
   if (c.x === 1) {
  //   o.ctx.fillStyle = '#1111' + c
   } else {
@@ -54,83 +35,51 @@ function point(pos, color) {
       switched = false      
     }
 
-    geometry = new THREE.PlaneGeometry(10, 10, 10)
-  //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
-    material = new THREE.MeshBasicMaterial({
-      color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
-      side: THREE.DoubleSide
-    })
-    cube = new THREE.Mesh(geometry, material)
-    cube.position.x = pos[0]
-    cube.position.y = pos[1]
-    cube.position.z = pos[2][0]
-    scene.add(cube)
-
-    geometry = new THREE.PlaneGeometry(10, 10, 10)
-  //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
-    material = new THREE.MeshBasicMaterial({
-      color: '#fd' + c.split('').reverse().join('') + hex.toString(16),
-      side: THREE.DoubleSide
-    })
-    cube = new THREE.Mesh(geometry, material)
-    cube.position.x = pos[0]
-    cube.position.y = pos[1]
-    cube.position.z = pos[2][1]
-    scene.add(cube)
-   // o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
+    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
+    o.ctx.fillRect(pos[0], pos[1], 1)
+    console.log('got here', o.ctx.fillStyle)
   }
-  //pos[0], pos[1], pos[2])
 }
 
-function conversion(x, y, z, R, mult) {
+function conversion(x, y, R, mult) {
   const m = R / o.x / mult
   const x1 = m * (2 * x - o.x)
   const y2 = m * (o.x - 2 * y)
-  const z3 = m * (2 * y - z)
-  return [x1, y2, z3]
+  return [x1, y2]
 }
 
-function f(z, c, mult) {
-  return [(z[0] * z[0] + z[1] * z[1] + c[0] - z[1]) / , (z[0] * z[1] - c[1]) / mult]
+function f(z, c) {
+  return [z[0] * z[0] + z[1] * z[1] + c[0] - z[1], z[0] * z[1] - c[1] / mult]
 }
 
 function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 22.2
+let R = 12.2
 let z, x = 0, y = 0, i
 let count = 0
 
 function init() {
-  /*
   o.canvas = document.querySelector('canvas')
   o.ctx = o.canvas.getContext('2d')
   o.ctx.imageSmoothingEnabled = true
   o.canvas.width = o.width
   o.canvas.height = o.length
-  */
- // renderer.autoClearColor = false
-  renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.setClearColor(0xffffff, 0)
-  document.body.appendChild(renderer.domElement)
-  scene.add(camera)
 }
 
 let mult = 1
 let flip = false
 
 function render() {
-  R -= 0.00005
-  orbit.update()
-  for (let j = 0; j < 4510; j++) {
-  
+  //R -= 0.00005
+
+  for (let j = 0; j < 510; j++) {
     x = Math.random() * o.x
     y = Math.random() * o.y
 
     i = 0
-    z = conversion(x, y, z, R, mult)
+    z = conversion(x, y, R, mult)
     
     while (i < o.maxIterate && abs(z) < R) {
       z = f(z, o.c)
@@ -140,22 +89,32 @@ function render() {
       }
 
       i++
+      //o.maxIterate -= 0.001
+      console.log(i)
     }
-
+    
+    count++
+    
+    if (count % 4000 === 0) {
+      if (flip) {
+        //mult -= 0.005
+        //R = 15
+      } else {
+        mult += 0.0005 
+      }
+    }
+    
+    if (count >= 1700000) {
+      flip = !flip
+      count = 0
+    }
+    
     if (i) {
-      point([x, y, z], i / o.maxIterate)
+      point([x, y], i / o.maxIterate)
     }
-  
   }
-  
- // point([10, 10, [10, 0]], 0.00410)
-  orbit.target.set(x, y, z[0])
-  renderer.render(scene, camera)
-  window.requestAnimationFrame(render)
-}
 
-window.onresize = function () {
-  renderer.setSize(window.innerWidth, window.innerHeight)
+  requestAnimationFrame(render) 
 }
 
 init()
