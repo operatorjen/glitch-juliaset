@@ -13,7 +13,7 @@ let switched = false
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
-  let c = 125 - Math.floor((10 + Math.tan(color * 200) / Math.log(o.maxIterate) * 11) * 4)
+  let c = 65 - Math.floor((3 + Math.sin(color * 180) / Math.log(o.maxIterate) * 11) * 14)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -32,7 +32,7 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
+    o.ctx.fillStyle = '#' + c + hex.toString(16)
   }
 
   o.ctx.fillRect(pos[0], pos[1], 1, 1)
@@ -46,7 +46,7 @@ function conversion(x, y, R, mult) {
 }
 
 function f(z, c) {
-  return [(z[0] * z[0] + z[1] * z[1] + c[0]) - z[1], (z[0] * z[1] - c[1]) / Math.sin(-5 * mult)]
+  return [(z[0] * z[0] + z[1] * z[1] + c[0]) - z[1], (z[0] * z[1] - c[1]) / Math.sin(-0.5 * mult)]
 }
 
 function abs(z) {
@@ -69,7 +69,7 @@ let mult = 1
 let flip = false
 
 function render() {
-  //R -= 0.00005
+  R -= 0.00005
   for (let j = 0; j < 50000; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
@@ -93,13 +93,13 @@ function render() {
     if (count % 3000 === 0) {
       if (flip) {
         //mult -= 0.005
-        R = 15
+        //R = 15
       } else {
         mult += 0.0005 
       }
     }
     
-    if (count >= 1700000) {
+    if (count >= 1000000) {
       flip = !flip
       count = 0
     }
