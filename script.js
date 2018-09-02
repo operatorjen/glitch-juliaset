@@ -1,5 +1,24 @@
 // from http://jsfiddle.net/3fnB6/29/
 
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  preserveDrawingBuffer: false,
+  alpha: true
+})
+
+renderer.setSize(window.innerWidth, window.innerHeight)
+
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 100)
+camera.position.z = -5
+camera.position.y = -10
+camera.position.x = 0.75
+
+const orbit = new THREE.OrbitControls(camera, renderer.domElement)
+orbit.autoRotate = true
+//orbit.rotateSpeed = 30
+orbit.enableZoom = false
+
 let o = {
   length : 500,
   width : 500,
@@ -42,7 +61,8 @@ function conversion(x, y, R, mult) {
   const m = R / o.width / mult
   const x1 = m * (2 * x - o.width)
   const y2 = m * (o.width - 2 * y)
-  return [x1, y2]
+  const z3 = m * 
+  return [x1, y2, z3]
 }
 
 function f(z, c) {
@@ -59,19 +79,28 @@ let z, x = 0, y = 0, i
 let count = 0
 
 function init() {
+  /*
   o.canvas = document.querySelector('canvas')
   o.ctx = o.canvas.getContext('2d')
   o.ctx.imageSmoothingEnabled = true
   o.canvas.width = o.width
   o.canvas.height = o.length
+  */
+  renderer.autoClearColor = false
+  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setClearColor(0xffffff, 0)
+  document.body.appendChild(renderer.domElement)
+  scene.add(camera)
 }
 
 let mult = 1
 let flip = false
 
 function render() {
-  R -= 0.00005
-  for (let j = 0; j < 50000; j++) {
+  //R -= 0.00005
+  orbit.update()
+  for (let j = 0; j < 5000; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
 
@@ -104,8 +133,6 @@ function render() {
       flip = !flip
       count = 0
     }
-    
-    //o.maxIterate += 0.0000011111
 
     if (i) {
       point([x, y], i / o.maxIterate)
