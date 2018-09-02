@@ -10,7 +10,7 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
-camera.position.z = -10
+
 const orbit = new THREE.OrbitControls(camera, renderer.domElement)
 orbit.autoRotate = true
 //orbit.rotateSpeed = 30
@@ -32,7 +32,7 @@ let hex = 110
 let switched = false
 let geometry, material, mesh
 
-function point(pos, color) {
+function point(pos, color, mult) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
   let c = 215 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
@@ -53,9 +53,8 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-
-    geometry = new THREE.PlaneGeometry(10, 10, 10)
-  //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
+    
+    geometry = new THREE.PlaneGeometry(10, 10, 10) 
     material = new THREE.MeshBasicMaterial({
       color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
       side: THREE.DoubleSide
@@ -63,9 +62,10 @@ function point(pos, color) {
     mesh = new THREE.Mesh(geometry, material)
     mesh.position.x = pos[0]
     mesh.position.y = pos[1]
-    mesh.position.z = pos[2][0]
-    scene.add(mesh)
-
+    mesh.position.z = pos[2
+                        
+    scene.add(new THREE.Mesh(geometry, material))
+/*
     geometry = new THREE.PlaneGeometry(10, 10, 10)
   //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
@@ -79,6 +79,7 @@ function point(pos, color) {
     
     geometry.merge(mesh.geometry, mesh.matrix)
     scene.add(mesh)
+    */
    // o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
   }
   //pos[0], pos[1], pos[2])
@@ -148,7 +149,7 @@ function render() {
     }
 
     if (i) {
-      point([x, y, z, w], i / o.maxIterate)
+      point([x, y, z, w], i / o.maxIterate, mult)
     }
   
   }
