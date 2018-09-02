@@ -1,8 +1,8 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  length : 100,
-  width : 100,
+  length : 500,
+  width : 500,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 550,
   canvas : null
@@ -46,7 +46,7 @@ function conversion(x, y, R, mult) {
 }
 
 function f(z, c) {
-  return [(z[0] * z[0] - z[1] * z[1] - c[0]) - z[1], (z[0] * z[1] + c[1]) / Math.sin(mult * 10)]
+  return [(z[0] * z[0] + z[1] * z[1] + c[0]) - z[1], (z[0] * z[1] - c[1]) / Math.sin(-0.5 * mult)]
 }
 
 function abs(z) {
