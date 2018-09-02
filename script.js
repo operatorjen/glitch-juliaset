@@ -70,8 +70,8 @@ let mult = 4.8
 let flip = false
 
 function render() {
-  //R -= 0.00005
-  for (let j = 0; j < 5010; j++) {
+  R -= 0.005
+  for (let j = 0; j < 50000; j++) {
     x = Math.random() * o.x
     y = Math.random() * o.y
 
@@ -93,14 +93,14 @@ function render() {
     
     if (count % 5000 === 0) {
       if (flip) {
-        //mult -= 0.005
+        mult += 5
         //R = 15
       } else {
-        mult -= 100
+        mult -= 0.05
       }
     }
     
-    if (count >= 1500000) {
+    if (count >= 2000000) {
       flip = !flip
       count = 0
     }
