@@ -10,9 +10,9 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
-camera.position.z = 10
+camera.position.z = -10
 const orbit = new THREE.OrbitControls(camera, renderer.domElement)
-orbit.autoRotate = true
+orbit.autoRotate = false
 //orbit.rotateSpeed = 30
 orbit.enableZoom = true
 
@@ -34,13 +34,13 @@ let geometry, material, cube
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
-  let c = 115 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
+  let c = 215 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
-  console.log(c)
+
   if (c.x === 1) {
  //   o.ctx.fillStyle = '#1111' + c
   } else {
-  /*  if (switched) {
+    if (switched) {
       hex--
     } else {
       hex++
@@ -53,8 +53,8 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    */
-    geometry = new THREE.BoxGeometry(1, 1, 1)
+    
+    geometry = new THREE.PlaneGeometry(1, 1, 1)
   //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
       color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
@@ -82,11 +82,12 @@ function point(pos, color) {
   //pos[0], pos[1], pos[2])
 }
 
-function conversion(x, y, R, mult) {
+function conversion(x, y, z, R, mult) {
   const m = R / o.x / mult
   const x1 = m * (2 * x - o.x)
   const y2 = m * (o.x - 2 * y)
-  return [x1, y2]
+  const z3 = m * (2 * y - o.z)
+  return [x1, y2, z3]
 }
 
 function f(z, c) {
@@ -124,12 +125,12 @@ function render() {
   //R -= 0.00005
   orbit.update()
  // for (let j = 0; j < 10; j++) {
-  /*
+  
     x = Math.random() * o.x
     y = Math.random() * o.y
 
     i = 0
-    z = conversion(x, y, R, mult)
+    z = conversion(x, y, z, R, mult)
     
     while (i < o.maxIterate && abs(z) < R) {
       z = f(z, o.c)
@@ -162,11 +163,10 @@ function render() {
     if (i) {
       point([x, y, z], i / o.maxIterate)
     }
-    */
+  
  // }
   
-  point([10, 10, [10, 0]], 0.00410)
-
+ // point([10, 10, [10, 0]], 0.00410)
   renderer.render(scene, camera)
   window.requestAnimationFrame(render)
 }
