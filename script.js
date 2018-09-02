@@ -1,9 +1,8 @@
 // from http://jsfiddle.net/3fnB6/29/
 
 let o = {
-  x: 500,
-  y: 500,
-  z: 500,
+  x: 300,
+  y: 300,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 550,
   canvas : null
@@ -67,7 +66,7 @@ function init() {
   o.canvas.height = o.y
 }
 
-let mult = 1
+let mult = 4.8
 let flip = false
 
 function render() {
@@ -92,16 +91,16 @@ function render() {
     
     count++
     
-    if (count % 3000 === 0) {
+    if (count % 1000 === 0) {
       if (flip) {
         //mult -= 0.005
         //R = 15
       } else {
-        mult += 0.05 
+        mult += 100
       }
     }
     
-    if (count >= 1700000) {
+    if (count >= 1000000) {
       flip = !flip
       count = 0
     }
