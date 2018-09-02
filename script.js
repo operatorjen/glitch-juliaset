@@ -2,15 +2,15 @@
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  preserveDrawingBuffer: false,
-  alpha: true
+  preserveDrawingBuffer: true,
+  alpha: false
 })
 
 renderer.setSize(window.innerWidth, window.innerHeight)
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
-
+camera.position.z = 10
 const orbit = new THREE.OrbitControls(camera, renderer.domElement)
 orbit.autoRotate = true
 //orbit.rotateSpeed = 30
@@ -30,13 +30,13 @@ let o = {
 
 let hex = 110
 let switched = false
-let geometry, material
+let geometry, material, cube
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
   let c = 115 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
-
+  console.log(c)
   if (c.x === 1) {
  //   o.ctx.fillStyle = '#1111' + c
   } else {
@@ -54,21 +54,23 @@ function point(pos, color) {
       switched = false      
     }
     */
-    geometry = new THREE.BoxGeometry(10, 10, 10)
+    geometry = new THREE.BoxGeometry(1, 1, 1)
   //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
-      color: '#2d' + c.split('').reverse().join('') + hex.toString(16)
+      color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
+      side: THREE.DoubleSide
     })
-    let cube = new THREE.Mesh(geometry, material)
+    cube = new THREE.Mesh(geometry, material)
     cube.position.x = pos[0]
     cube.position.y = pos[1]
     cube.position.z = pos[2][0]
     scene.add(cube)
 
-    geometry = new THREE.BoxGeometry(1, 1, 1)
+    geometry = new THREE.PlaneGeometry(1, 1, 1)
   //  console.log('5a', c.split('').reverse().join('') + hex.toString(16))
     material = new THREE.MeshBasicMaterial({
-      color: '#2d' + c.split('').reverse().join('') + hex.toString(16)
+      color: '#2d' + c.split('').reverse().join('') + hex.toString(16),
+      side: THREE.DoubleSide
     })
     cube = new THREE.Mesh(geometry, material)
     cube.position.x = pos[0]
@@ -107,7 +109,7 @@ function init() {
   o.canvas.width = o.width
   o.canvas.height = o.length
   */
-  renderer.autoClearColor = false
+ // renderer.autoClearColor = false
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
   renderer.setClearColor(0xffffff, 0)
@@ -122,6 +124,7 @@ function render() {
   //R -= 0.00005
   orbit.update()
  // for (let j = 0; j < 10; j++) {
+  /*
     x = Math.random() * o.x
     y = Math.random() * o.y
 
@@ -137,7 +140,7 @@ function render() {
 
       i++
       //o.maxIterate -= 0.001
-      console.log(i)
+      //console.log(i)
     }
     
     count++
@@ -159,9 +162,17 @@ function render() {
     if (i) {
       point([x, y, z], i / o.maxIterate)
     }
+    */
  // }
+  
+  point([10, 10, [10, 0]], 0.00410)
 
-  requestAnimationFrame(render) 
+  renderer.render(scene, camera)
+  window.requestAnimationFrame(render)
+}
+
+window.onresize = function () {
+  renderer.setSize(window.innerWidth, window.innerHeight)
 }
 
 init()
