@@ -13,7 +13,7 @@ let switched = false
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
-  let c = 125 - Math.floor((10 + Math.tan(color * 230) / Math.log(o.maxIterate) * 81) * 4)
+  let c = 125 - Math.floor((10 + Math.tan(color * 200) / Math.log(o.maxIterate) * 11) * 4)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -46,14 +46,14 @@ function conversion(x, y, R, mult) {
 }
 
 function f(z, c) {
-  return [(z[0] * z[0] + z[1] * z[1] + c[0]) - z[1], (z[0] * z[1] - c[1]) / Math.sin(-0.5 * mult)]
+  return [(z[0] * z[0] + z[1] * z[1] + c[0]) - z[1], (z[0] * z[1] - c[1]) / Math.sin(-5 * mult)]
 }
 
 function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 11.2
+let R = 15.2
 let z, x = 0, y = 0, i
 let count = 0
 
@@ -90,9 +90,10 @@ function render() {
     
     count++
     
-    if (count % 5000 === 0) {
+    if (count % 3000 === 0) {
       if (flip) {
         //mult -= 0.005
+        R = 15
       } else {
         mult += 0.0005 
       }
