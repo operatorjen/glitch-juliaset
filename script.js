@@ -14,7 +14,7 @@ let switched = false
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
-  let c = 215 - Math.floor((0.5 + Math.tan(color * 210) / Math.log(o.maxIterate) * 11) * 30)
+  let c = 145 - Math.floor((0.5 + Math.sin(color * 210) / Math.log(o.maxIterate) * 11) * 30)
   c = c.toString(16)
 
   if (c.x === 1) {
@@ -34,9 +34,9 @@ function point(pos, color) {
       switched = false      
     }
  
-    o.ctx.fillStyle = '#' + c.split('').reverse().join('') 
-    console.log(o.ctx.fillStyle)
-    o.ctx.fillRect(pos[0], pos[1], 10, 10)
+    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16) + c
+
+    o.ctx.fillRect(pos[0], pos[1], 0.5, 0.5)
   }
 }
 
@@ -63,8 +63,8 @@ function init() {
   o.canvas = document.querySelector('canvas')
   o.ctx = o.canvas.getContext('2d')
   o.ctx.imageSmoothingEnabled = true
-  o.canvas.width = o.width
-  o.canvas.height = o.length
+  o.canvas.width = o.x
+  o.canvas.height = o.y
 }
 
 let mult = 1
@@ -72,7 +72,7 @@ let flip = false
 
 function render() {
   //R -= 0.00005
-  for (let j = 0; j < 10; j++) {
+  for (let j = 0; j < 5010; j++) {
     x = Math.random() * o.x
     y = Math.random() * o.y
 
@@ -92,12 +92,12 @@ function render() {
     
     count++
     
-    if (count % 4000 === 0) {
+    if (count % 3000 === 0) {
       if (flip) {
         //mult -= 0.005
         //R = 15
       } else {
-        mult += 0.0005 
+        mult += 0.05 
       }
     }
     
