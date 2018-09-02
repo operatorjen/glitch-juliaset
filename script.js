@@ -9,10 +9,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight)
 
 const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 100)
-camera.position.z = -5
-camera.position.y = -10
-camera.position.x = 0.75
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000)
 
 const orbit = new THREE.OrbitControls(camera, renderer.domElement)
 orbit.autoRotate = true
@@ -20,8 +17,9 @@ orbit.autoRotate = true
 orbit.enableZoom = false
 
 let o = {
-  length : 500,
-  width : 500,
+  x: 500,
+  y: 500,
+  z: 500,
   c : [0, 1], // c = x + iy will be [x, y]
   maxIterate : 550,
   canvas : null
@@ -29,6 +27,7 @@ let o = {
 
 let hex = 110
 let switched = false
+let geometry, material
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
@@ -36,7 +35,7 @@ function point(pos, color) {
   c = c.toString(16)
 
   if (c.length === 1) {
-    o.ctx.fillStyle = '#1111' + c
+ //   o.ctx.fillStyle = '#1111' + c
   } else {
     if (switched) {
       hex--
@@ -51,27 +50,36 @@ function point(pos, color) {
     if (hex < 10) {
       switched = false      
     }
-    o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
+    
+    geometry = new THREE.BoxGeometry(1, 1, 1)
+    material = new THREE.MeshBasicMaterial({
+      color: '#' + c.split('').reverse().join('') + hex.toString(16)
+    })
+    let cube = new THREE.Mesh(geometry, material)
+    cube.position.x = pos[0]
+    cube.position.y = pos[1]
+    cube.position.z = pos[2]
+    scene.add(cube)
+   // o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16)
   }
-
-  o.ctx.fillRect(pos[0], pos[1], 1, 1)
+  //pos[0], pos[1], pos[2])
 }
 
 function conversion(x, y, R, mult) {
   const m = R / o.width / mult
   const x1 = m * (2 * x - o.width)
   const y2 = m * (o.width - 2 * y)
-  const z3 = m * 
+  const z3 = m * (2 * x * y - o.width)
   return [x1, y2, z3]
 }
 
 function f(z, c) {
   //return [z[0] * z[0] + z[1] * z[1] + c[0] - z[1], z[0] * z[1] - c[1]]
-  return [(z[0] * z[0] - z[1] * z[1] + c[0] / mult) * mult, (2 * z[0] * z[1] + c[1] / mult) * Math.cos(-mult / 10)]
+  return [(z[0] * z[0] - z[1] * z[1] - z[2] * z[2] + c[0] / mult) * mult, (2 * z[0] * z[1] * z[2] + c[1] / mult) * Math.cos(-mult / 10)]
 }
 
 function abs(z) {
-  return Math.sqrt(z[0] * z[0] + z[1] * z[1])
+  return Math.sqrt(z[0] * z[0] + z[1] * z[1] + z[2] * z[2])
 }
 
 let R = 2.2
@@ -100,9 +108,9 @@ let flip = false
 function render() {
   //R -= 0.00005
   orbit.update()
-  for (let j = 0; j < 5000; j++) {
-    x = Math.random() * o.width
-    y = Math.random() * o.length
+  for (let j = 0; j < 50; j++) {
+    x = Math.random() * o.x
+    y = Math.random() * o.y
 
     i = 0
     z = conversion(x, y, R, mult)
@@ -135,7 +143,7 @@ function render() {
     }
 
     if (i) {
-      point([x, y], i / o.maxIterate)
+      point([x, y, z], i / o.maxIterate)
     }
   }
 
