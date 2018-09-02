@@ -13,7 +13,7 @@ let switched = false
 
 function point(pos, color) {
   // let c = 105 - Math.floor((10 + Math.log(color) / Math.log(o.maxIterate) * 11) * 4)
-  let c = 165 - Math.floor((3 + Math.sin(color * 160) / Math.log(o.maxIterate) * 11) * 14)
+  let c = 245 - Math.floor((3 + Math.sin(color * 240) / Math.log(o.maxIterate) * 2) * 30)
   c = c.toString(16)
 
   if (c.length === 1) {
@@ -39,21 +39,21 @@ function point(pos, color) {
 }
 
 function conversion(x, y, R, mult) {
-  const m = (R / mult)  / o.width / (mult + (mult * 2))
-  const x1 = m * (mult * x - o.width)
+  const m = (R / mult)  / o.width / (mult + (mult / 0.2))
+  const x1 = m * (2 * x - o.width)
   const y2 = m * (o.width - y)
   return [x1, y2]
 }
 
 function f(z, c) {
-  return [(z[0] * z[0] + z[1] * z[1] + c[1]) - z[1], (z[0] * z[1] - c[0]) / Math.sin(-0.5 * mult)]
+  return [(z[0] * z[0] + z[1] * z[1] + c[0]) - z[1], (z[0] * z[1] - c[1]) / mult]
 }
 
 function abs(z) {
   return Math.sqrt(z[0] * z[0] + z[1] * z[1])
 }
 
-let R = 15.2
+let R = 5.2
 let z, x = 0, y = 0, i
 let count = 0
 
@@ -69,7 +69,7 @@ let mult = 1
 let flip = false
 
 function render() {
-  R += 0.00005
+  R -= 0.00005
   for (let j = 0; j < 50000; j++) {
     x = Math.random() * o.width
     y = Math.random() * o.length
@@ -90,7 +90,7 @@ function render() {
     
     count++
     
-    if (count % 3000 === 0) {
+    if (count % 4000 === 0) {
       if (flip) {
         //mult -= 0.005
         //R = 15
@@ -99,7 +99,7 @@ function render() {
       }
     }
     
-    if (count >= 1000000) {
+    if (count >= 1700000) {
       flip = !flip
       count = 0
     }
