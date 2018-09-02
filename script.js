@@ -35,8 +35,7 @@ function point(pos, color) {
     }
  
     o.ctx.fillStyle = '#' + c.split('').reverse().join('') + hex.toString(16) + c
-
-    o.ctx.fillRect(pos[0], pos[1], size, size)
+    o.ctx.arc(pos[0], pos[1], size, 0, 10)
   }
 }
 
